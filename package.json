@@ -1,0 +1,30 @@
+{
+  "name": "npm-shizzle",
+  "version": "1.0.0",
+  "description": "An npm cli wrapper with a sync and async interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3rd-Eden/npm-shizzle"
+  },
+  "keywords": [
+    "npm",
+    "npm-shizzle",
+    "shizzle",
+    "cli"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/3rd-Eden/npm-shizzle/issues"
+  },
+  "homepage": "https://github.com/3rd-Eden/npm-shizzle",
+  "dependencies": {
+    "diagnostics": "0.0.x",
+    "fusing": "1.0.x",
+    "shelljs": "0.3.x"
+  }
+}
