@@ -1,9 +1,7 @@
-'use strict';
-
-var debug = require('diagnostics')('npm-shizzle')
-  , shelly = require('shelljs')
-  , fuse = require('fusing')
-  , path = require('path');
+const debug = require('diagnostics')('npm-shizzle');
+const shelly = require('shelljs');
+const fuse = require('fusing');
+const path = require('path');
 
 /**
  * Create a human readable interface for interacting with the npm binary that is
@@ -58,8 +56,8 @@ shelly.exec(NPM.path +' -l', {
 
   return line;
 }).filter(Boolean).forEach(function each(cmd) {
-  var method = cmd
-    , index;
+  let method = cmd;
+  let index;
 
   //
   // Some these methods contain dashes, it's a pain to write git()['symbolic-ref']
@@ -82,8 +80,9 @@ shelly.exec(NPM.path +' -l', {
    * @api public
    */
   NPM.readable(method, function proxycmd(params, fn) {
-    var npm = NPM.path +' '+ cmd +' '
-      , res;
+    const options = this._options;
+    let npm = NPM.path +' '+ cmd +' ';
+    let res;
 
     if ('function' === typeof params) fn = params;
     if ('string' === typeof params) npm += params;
@@ -97,16 +96,20 @@ shelly.exec(NPM.path +' -l', {
     //
     // Add default CLI flags to the command, which should be last..
     //
-    if (this._options.username) {
-      npm +='--username '+ this._options.username +' ';
+    if (options.username) {
+      npm +='--username '+ options.username +' ';
     }
 
-    if (this._options.password) {
-      npm +='--password '+ this._options.password +' ';
+    if (options.password) {
+      npm +='--password '+ options.password +' ';
     }
 
-    if (this._options.registry) {
-      npm +='--registry '+ this._options.registry +' ';
+    if (options.registry) {
+      npm +='--registry '+ options.registry +' ';
+    }
+
+    if (options.userconfig) {
+      npm +='--userconfig'+ options.userconfig + ' ';
     }
 
     npm +='--always-auth --no-strict-ssl ';
@@ -114,7 +117,14 @@ shelly.exec(NPM.path +' -l', {
     shelly.cd(this.__dirname);
     debug('executing cmd', npm);
 
-    res = shelly.exec(npm.trim(), { silent: true }, fn ? function cb(code, output) {
+    //
+    // We want to give people the option to pipe the output to the stdout
+    //
+    const opts = Object.assign({}, options.exec || {}, {
+      silent: 'silent' in options ? options.silent : true
+    });
+
+    res = shelly.exec(npm.trim(), opts, fn ? function cb(code, output) {
       if (+code) return fn(new Error((output || 'Incorrect code #'+ code).trim()));
 
       fn(undefined, output);
