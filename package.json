@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/3rd-Eden/npm-shizzle",
   "dependencies": {
-    "diagnostics": "0.0.x",
+    "diagnostics": "~1.0.1",
     "fusing": "1.0.x",
-    "shelljs": "0.3.x"
+    "shelljs": "~0.7.5"
   }
 }
